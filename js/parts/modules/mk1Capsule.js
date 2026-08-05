@@ -6,7 +6,7 @@ export const mk1Capsule = {
 
     type: "capsule",
 
-    image: "./assets/parts/mk1_capsule.png",
+    image: "./assets/parts/mk1-capsule.png",
 
     stats: {
         mass: 0.8
