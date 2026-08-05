@@ -1,177 +1,329 @@
-/* Builder Layout */
-.builder-layout {
-    display: flex;
-    height: calc(100vh - 40px); /* নিচে স্ট্যাটাস বারের জন্য ৪০পিক্সেল জায়গা রাখা হয়েছে */
-    width: 100vw;
+/* ===========================
+   BUILDER LAYOUT
+=========================== */
+
+.builder-layout{
+    display:flex;
+    height:calc(100vh - 40px);
+    width:100%;
 }
 
-/* Sidebar */
-.sidebar {
-    width: 300px;
-    background-color: var(--panel);
-    border-right: 2px solid var(--panel-border);
-    position: relative;
-    display: flex;
-    flex-direction: column;
+/* ===========================
+   SIDEBAR
+=========================== */
+
+.sidebar{
+    width:320px;
+    background:#f7f3e8;
+    border-right:2px solid #444;
+    display:flex;
+    flex-direction:column;
 }
 
-/* খাতার লাল মার্জিন দাগ */
-.sidebar::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 40px;
-    width: 2px;
-    background-color: var(--danger);
-    opacity: 0.5;
+.sidebar-header{
+    padding:20px;
+    border-bottom:2px solid #999;
 }
 
-.sidebar-header {
-    padding: 20px 10px 20px 55px;
-    border-bottom: 2px dashed var(--panel-border);
+.part-list{
+    flex:1;
+    overflow-y:auto;
+    padding:15px;
 }
 
-.part-list {
-    flex-grow: 1;
-    padding: 20px 10px 20px 55px;
-    overflow-y: auto;
+/* ===========================
+   PART CARD
+=========================== */
+
+.part-item{
+    display:flex;
+    align-items:center;
+    gap:15px;
+
+    padding:12px;
+    margin-bottom:12px;
+
+    background:white;
+
+    border:2px solid #444;
+    border-radius:10px;
+
+    cursor:grab;
+
+    transition:.25s;
 }
 
-/* Main Workspace (Blueprint canvas) */
-.workspace {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    /* খাতার নীল দাগ তৈরি করা হচ্ছে */
-    background-image: repeating-linear-gradient(
-        transparent,
-        transparent 24px,
-        var(--paper-line) 25px
-    );
-    background-size: 100% 25px;
+.part-item:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 8px 18px rgba(0,0,0,.15);
 }
 
-.toolbar {
-    height: 60px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-    border-bottom: 2px dashed var(--panel-border);
-    background: rgba(246, 240, 223, 0.8);
+.part-item:active{
+
+    cursor:grabbing;
+
+    transform:scale(.97);
 }
 
-.assembly-area {
-    flex-grow: 1;
-    margin: 20px;
-    border: 3px dashed var(--panel-border);
-    border-radius: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
+/* ===========================
+   ICON
+=========================== */
 
-/* Status Bar */
-.statusbar {
-    height: 40px;
-    background-color: var(--panel);
-    border-top: 2px solid var(--panel-border);
-    display: flex;
-    align-items: center;
-    /* Sidebar Parts Styling */
-.part-item {
-    padding: 15px;
-    margin-bottom: 10px;
-    border: 2px solid var(--ink);
-    border-radius: 5px;
-    cursor: grab;
-    text-align: center;
-    font-weight: bold;
-    background-color: var(--paper);
-    transition: 0.2s;
-}
-
-.part-item:active {
-    cursor: grabbing;
-}
-
-.capsule-shape { border-color: #2c3e50; border-radius: 20px 20px 5px 5px; }
-.tank-shape { border-color: #f39c12; }
-.engine-shape { border-color: #c0392b; border-bottom: 4px solid #c0392b; }
-
-/* Assembled Parts in Canvas */
-.assembled-part {
-    width: 150px;
-    padding: 20px;
-    margin: 2px 0;
-    text-align: center;
-    font-size: 0.9rem;
-    font-weight: bold;
-    background-color: #fff;
-    border: 2px solid var(--ink);
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-}
-
-/* ফ্লেক্সবক্সে উপর থেকে নিচে সাজানোর জন্য drop-zone আপডেট */
-#drop-zone {
-    flex-direction: column;
-    justify-content: flex-start;
-    padding-top: 50px;
-}
-    padding: 0 20px;
-    gap: 30px;
-    font-weight: bold;
-}
-/* Assembled Parts Update */
-.assembled-part {
-    width: 180px;
-    padding: 15px;
-    margin: 2px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.9rem;
-    font-weight: bold;
-    background-color: #fff;
-    border: 2px solid var(--ink);
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-    position: relative;
-}
-
-/* Delete Button Style */
-.delete-btn {
-    background: transparent;
-    border: none;
-    color: var(--danger);
-    font-size: 1.2rem;
-    cursor: pointer;
-    padding: 0 5px;
-    opacity: 0; /* নরমালি লুকানো থাকবে */
-    transition: 0.2s;
-}
-
-/* হোভার করলে ডিলিট বাটন দেখাবে */
-.assembled-part:hover .delete-btn {
-    opacity: 1;
-}
 .part-icon{
+
     width:70px;
     height:70px;
+
     display:flex;
     justify-content:center;
     align-items:center;
+
     flex-shrink:0;
 }
 
 .part-icon img{
+
     width:64px;
     height:64px;
+
     object-fit:contain;
-    display:block;
 }
 
-.delete-btn:hover {
-    transform: scale(1.2);
+/* ===========================
+   DETAILS
+=========================== */
+
+.part-details{
+
+    flex:1;
+}
+
+.part-details h4{
+
+    margin:0;
+    font-size:16px;
+}
+
+.part-details p{
+
+    margin-top:6px;
+
+    color:#666;
+
+    font-size:13px;
+}
+
+/* ===========================
+   WORKSPACE
+=========================== */
+
+.workspace{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+    background:
+
+    repeating-linear-gradient(
+
+        transparent,
+
+        transparent 24px,
+
+        rgba(0,0,255,.08) 25px
+
+    );
+}
+
+/* ===========================
+   TOOLBAR
+=========================== */
+
+.toolbar{
+
+    height:60px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 20px;
+
+    border-bottom:2px solid #999;
+
+    background:#f7f3e8;
+}
+
+/* ===========================
+   ASSEMBLY AREA
+=========================== */
+
+.assembly-area{
+
+    flex:1;
+
+    margin:20px;
+
+    border:3px dashed #666;
+
+    border-radius:12px;
+
+    position:relative;
+
+    overflow:auto;
+}
+
+/* ===========================
+   DROP ZONE
+=========================== */
+
+#drop-zone{
+
+    min-height:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:flex-start;
+
+    padding-top:50px;
+
+    gap:6px;
+}
+
+/* ===========================
+   ROCKET PART
+=========================== */
+
+.assembled-part{
+
+    width:190px;
+
+    background:white;
+
+    border:2px solid #333;
+
+    border-radius:10px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    padding:12px;
+
+    position:relative;
+
+    transition:.25s;
+}
+
+.assembled-part:hover{
+
+    transform:scale(1.03);
+
+    box-shadow:0 10px 20px rgba(0,0,0,.2);
+}
+
+.assembled-image{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+}
+
+.assembled-image img{
+
+    width:110px;
+
+    height:110px;
+
+    object-fit:contain;
+}
+
+.assembled-name{
+
+    margin-top:10px;
+
+    font-weight:bold;
+
+    text-align:center;
+}
+
+/* ===========================
+   DELETE BUTTON
+=========================== */
+
+.delete-btn{
+
+    position:absolute;
+
+    top:6px;
+
+    right:6px;
+
+    width:26px;
+
+    height:26px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:#ff4d4d;
+
+    color:white;
+
+    cursor:pointer;
+
+    opacity:0;
+
+    transition:.25s;
+}
+
+.assembled-part:hover .delete-btn{
+
+    opacity:1;
+}
+
+.delete-btn:hover{
+
+    transform:scale(1.15);
+}
+
+/* ===========================
+   STATUS BAR
+=========================== */
+
+.statusbar{
+
+    height:40px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:30px;
+
+    padding:0 20px;
+
+    background:#f7f3e8;
+
+    border-top:2px solid #999;
+
+    font-weight:bold;
 }
