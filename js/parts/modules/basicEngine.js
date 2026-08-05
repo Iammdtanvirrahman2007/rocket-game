@@ -6,7 +6,7 @@ export const basicEngine = {
 
     type: "engine",
 
-    image: "./assets/parts/basic_engine.png",
+    image: "./assets/parts/basic-engine.png",
 
     stats: {
         mass: 1.2
