@@ -3,79 +3,206 @@ import { loadPartsToSidebar } from '../parts/registry.js';
 import { initDragAndDrop, getRocketData } from '../core/dragManager.js';
 import { saveRocketToCloud } from '../core/firebaseConfig.js';
 
+// ======================================
+// HTML
+// ======================================
+
 export function getHTML() {
+
     return `
         <div class="builder-layout">
-            <!-- Left Sidebar (Parts Library) -->
+
+            <!-- ==================================
+                 SIDEBAR
+            =================================== -->
+
             <aside class="sidebar">
+
                 <div class="sidebar-header">
                     <h2>Components</h2>
                 </div>
+
                 <div id="part-loader" class="part-list">
                     <p>Loading parts...</p>
                 </div>
+
             </aside>
 
-            <!-- Main Blueprint Canvas -->
+            <!-- ==================================
+                 WORKSPACE
+            =================================== -->
+
             <main class="workspace">
+
                 <header class="toolbar">
-                    <button id="btn-back" class="secondary-btn">← Back to Menu</button>
+
+                    <button id="btn-back"
+                            class="secondary-btn">
+                        ← Back to Menu
+                    </button>
+
                     <h2>Vehicle Assembly</h2>
-                    <div>
-                        <button id="btn-save" class="secondary-btn">Save to Cloud ☁️</button>
-                        <button id="btn-launch" class="primary-btn">LAUNCH 🚀</button>
+
+                    <div class="toolbar-actions">
+
+                        <button id="btn-save"
+                                class="secondary-btn">
+                            Save to Cloud ☁️
+                        </button>
+
+                        <button id="btn-launch"
+                                class="primary-btn">
+                            LAUNCH 🚀
+                        </button>
+
                     </div>
+
                 </header>
 
-                <section class="assembly-area" id="drop-zone">
-                    <p style="opacity: 0.5; font-style: italic;">Drag rocket components here</p>
+                <!-- ==================================
+                     ASSEMBLY AREA
+                =================================== -->
+
+                <section class="assembly-area">
+
+                    <div id="drop-zone">
+
+                        <!-- 2D Rocket Blueprint Body -->
+                        <div id="rocket-body"></div>
+
+                        <!-- Placeholder -->
+                        <p class="placeholder">
+                            Drag rocket components here
+                        </p>
+
+                    </div>
+
                 </section>
+
             </main>
+
         </div>
 
-        <!-- Bottom Status Bar -->
+        <!-- ==================================
+             STATUS BAR
+        =================================== -->
+
         <footer class="statusbar">
-            <div>Parts: <span id="stat-parts">0</span></div>
-            <div>Mass: <span id="stat-mass">0.0t</span></div>
-            <div>Stages: <span id="stat-stages">0</span></div>
+
+            <div>
+                Parts:
+                <span id="stat-parts">0</span>
+            </div>
+
+            <div>
+                Mass:
+                <span id="stat-mass">0.0t</span>
+            </div>
+
+            <div>
+                Stages:
+                <span id="stat-stages">0</span>
+            </div>
+
         </footer>
     `;
 }
 
+// ======================================
+// INIT
+// ======================================
+
 export function init() {
-    console.log("🛠️ Builder Module Initialized");
 
-    document.getElementById('btn-back')?.addEventListener('click', () => {
-        navigateTo('home');
-    });
+    console.log('🛠️ Builder Module Initialized');
 
+    // Back Button
+    document.getElementById('btn-back')
+        ?.addEventListener('click', () => {
+
+            navigateTo('home');
+
+        });
+
+    // Load Parts
     loadPartsToSidebar();
+
+    // Enable Drag & Drop
     initDragAndDrop();
 
-    // Cloud Save Button Logic
+    // ==================================
+    // SAVE BUTTON
+    // ==================================
+
     const saveBtn = document.getElementById('btn-save');
+
     if (saveBtn) {
+
         saveBtn.addEventListener('click', async () => {
+
             const rocketData = getRocketData();
-            
+
+            // Empty Rocket Check
             if (rocketData.parts.length === 0) {
-                alert("Cannot save an empty rocket! Add some parts first.");
+
+                alert(
+                    'Cannot save an empty rocket! Add some parts first.'
+                );
+
                 return;
             }
 
-            saveBtn.innerText = "Saving...";
+            // Loading State
+            saveBtn.innerText = 'Saving...';
             saveBtn.disabled = true;
 
-            const result = await saveRocketToCloud(rocketData);
+            try {
 
-            if (result.success) {
-                alert(`🎉 Rocket successfully saved to Cloud! ID: ${result.id}`);
-            } else {
-                alert(`❌ Failed to save: ${result.error}`);
+                const result = await saveRocketToCloud(rocketData);
+
+                if (result.success) {
+
+                    alert(
+                        `🎉 Rocket successfully saved! ID: ${result.id}`
+                    );
+
+                } else {
+
+                    alert(
+                        `❌ Failed to save: ${result.error}`
+                    );
+                }
+
+            } catch (error) {
+
+                console.error(error);
+
+                alert('❌ Unexpected error while saving rocket');
+
             }
 
-            saveBtn.innerText = "Save to Cloud ☁️";
+            // Restore Button
+            saveBtn.innerText = 'Save to Cloud ☁️';
             saveBtn.disabled = false;
         });
     }
+
+    // ==================================
+    // LAUNCH BUTTON (Future)
+    // ==================================
+
+    document.getElementById('btn-launch')
+        ?.addEventListener('click', () => {
+
+            const rocketData = getRocketData();
+
+            if (rocketData.parts.length === 0) {
+                alert('Build a rocket first!');
+                return;
+            }
+
+            console.log('🚀 Launching Rocket:', rocketData);
+
+            // Future: navigateTo('flight');
+        });
 }
