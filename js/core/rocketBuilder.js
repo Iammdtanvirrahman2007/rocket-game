@@ -39,9 +39,13 @@ export function addPart(part) {
 
         children: [],
 
-        position: {
-            x: 0,
-            y: 0
+        position:{
+
+    x:0,
+
+    y: rocket.length * 120
+
+},
         },
 
         rotation: 0
