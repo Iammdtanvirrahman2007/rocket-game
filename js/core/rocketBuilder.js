@@ -39,13 +39,9 @@ export function addPart(part) {
 
         children: [],
 
-        position:{
-
-    x:0,
-
-    y: rocket.length * 120
-
-},
+        position: {
+            x: 0,
+            y: rocket.length * 120
         },
 
         rotation: 0
@@ -59,9 +55,7 @@ export function addPart(part) {
     if (rocket.length === 0) {
 
         if (!canAttach(null, newPart)) {
-
             return null;
-
         }
 
     }
@@ -75,9 +69,7 @@ export function addPart(part) {
         const parent = rocket[rocket.length - 1];
 
         if (!canAttach(parent, newPart)) {
-
             return null;
-
         }
 
         newPart.parent = parent.uid;
@@ -101,15 +93,16 @@ export function removePart(uid) {
 
     if (!part) return;
 
-    // Parent থেকে Child Remove
+    // Parent থেকে Remove
     if (part.parent) {
 
         const parent = getPart(part.parent);
 
         if (parent) {
 
-            parent.children =
-                parent.children.filter(id => id !== uid);
+            parent.children = parent.children.filter(
+                id => id !== uid
+            );
 
         }
 
@@ -121,14 +114,14 @@ export function removePart(uid) {
         const child = getPart(childId);
 
         if (child) {
-
             child.parent = null;
-
         }
 
     });
 
-    rocket = rocket.filter(p => p.uid !== uid);
+    rocket = rocket.filter(
+        p => p.uid !== uid
+    );
 
 }
 
@@ -216,11 +209,7 @@ export function getTotalMass() {
 
     return rocket.reduce(
 
-        (sum, part) => {
-
-            return sum + part.stats.mass;
-
-        },
+        (sum, part) => sum + part.stats.mass,
 
         0
 
