@@ -39,31 +39,22 @@
     display:flex;
     align-items:center;
     gap:12px;
-
     padding:10px;
     margin-bottom:10px;
-
     background:#fff;
-
     border:2px solid #444;
     border-radius:10px;
-
     cursor:grab;
-
     transition:.2s;
 }
 
 .part-item:hover{
-
     transform:translateY(-2px);
-
     box-shadow:0 8px 15px rgba(0,0,0,.15);
 }
 
 .part-item:active{
-
     cursor:grabbing;
-
     transform:scale(.98);
 }
 
@@ -72,46 +63,32 @@
 ===================================== */
 
 .part-icon{
-
     width:60px;
     height:60px;
-
     display:flex;
     justify-content:center;
     align-items:center;
-
     flex-shrink:0;
 }
 
 .part-icon img{
-
     max-width:55px;
     max-height:55px;
-
-    width:auto;
-    height:auto;
-
     object-fit:contain;
 }
 
 .part-details{
-
     flex:1;
 }
 
 .part-details h4{
-
     margin:0;
-
     font-size:15px;
 }
 
 .part-details p{
-
     margin-top:5px;
-
     font-size:12px;
-
     color:#666;
 }
 
@@ -120,24 +97,15 @@
 ===================================== */
 
 .workspace{
-
     flex:1;
-
     display:flex;
-
     flex-direction:column;
-
     background:
-
-    repeating-linear-gradient(
-
-        transparent,
-
-        transparent 24px,
-
-        rgba(0,70,255,.08) 25px
-
-    );
+        repeating-linear-gradient(
+            transparent,
+            transparent 24px,
+            rgba(0,70,255,.08) 25px
+        );
 }
 
 /* =====================================
@@ -145,19 +113,12 @@
 ===================================== */
 
 .toolbar{
-
     height:60px;
-
     display:flex;
-
     justify-content:space-between;
-
     align-items:center;
-
     padding:0 20px;
-
     background:#f7f3e8;
-
     border-bottom:2px solid #bbb;
 }
 
@@ -166,15 +127,10 @@
 ===================================== */
 
 .assembly-area{
-
     flex:1;
-
     margin:20px;
-
     border:3px dashed #777;
-
     border-radius:10px;
-
     overflow:auto;
 }
 
@@ -183,116 +139,51 @@
 ===================================== */
 
 #drop-zone{
-
     min-height:100%;
-
     display:flex;
-
     flex-direction:column;
-
     align-items:center;
-
     justify-content:flex-start;
-
-    gap:5px;
-
-    padding:20px;
+    gap:0;
+    padding:30px;
 }
 
 /* =====================================
    ROCKET PART
 ===================================== */
 
-.assembled-part{
-
-    width:100px;
-
-    min-height:120px;
-
-    background:#fff;
-
-    border:2px solid #333;
-
-    border-radius:8px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:center;
-
-    justify-content:center;
-
-    padding:6px;
-
+.rocket-part{
     position:relative;
-
-    transition:.2s;
-}
-
-.assembled-part:hover{
-
-    transform:scale(1.03);
-
-    box-shadow:0 8px 15px rgba(0,0,0,.18);
-}
-
-/* =====================================
-   ROCKET IMAGE
-===================================== */
-
-.assembled-image{
-
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
-    width:100%;
+    margin:-8px 0;
 }
 
-.assembled-image img{
+/* Rocket Image */
 
-    max-width:55px;
-
-    max-height:80px;
-
-    width:auto;
-
+.rocket-part img{
+    width:120px;
     height:auto;
-
+    display:block;
     object-fit:contain;
-}
-
-/* =====================================
-   NAME
-===================================== */
-
-.assembled-name{
-
-    margin-top:5px;
-
-    text-align:center;
-
-    font-size:11px;
-
-    font-weight:600;
-
-    line-height:1.2;
+    user-select:none;
+    -webkit-user-drag:none;
 }
 
 /* =====================================
    DELETE BUTTON
 ===================================== */
-.delete-btn{
+
+.rocket-part .delete-btn{
+
     position:absolute;
 
-    top:4px;
-    right:4px;
+    top:5px;
+    right:-22px;
 
-    width:18px;
-    height:18px;
+    width:22px;
+    height:22px;
 
     border:none;
     border-radius:50%;
@@ -304,18 +195,22 @@
     font-weight:bold;
 
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
 
     cursor:pointer;
 
     opacity:0;
 
-    transition:0.2s;
+    transition:.2s;
 }
 
-.assembled-part:hover .delete-btn{
+.rocket-part:hover .delete-btn{
     opacity:1;
+}
+
+.rocket-part .delete-btn:hover{
+    transform:scale(1.15);
 }
 
 /* =====================================
@@ -323,43 +218,12 @@
 ===================================== */
 
 .statusbar{
-
     height:40px;
-
     display:flex;
-
     align-items:center;
-
     gap:30px;
-
     padding:0 20px;
-
     background:#f7f3e8;
-
     border-top:2px solid #bbb;
-
     font-weight:bold;
-}
-.rocket-part{
-
-    display:flex;
-
-    justify-content:center;
-
-    margin:-8px 0;
-
-}
-
-.rocket-part img{
-
-    width:120px;
-
-    height:auto;
-
-    display:block;
-
-    user-select:none;
-
-    pointer-events:none;
-
 }
