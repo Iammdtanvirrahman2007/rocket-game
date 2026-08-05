@@ -231,6 +231,7 @@
 .rocket-part{
     position:absolute;
     width:120px;
+    height:120px;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -239,9 +240,10 @@
 
 .rocket-part img{
     width:120px;
-    height:auto;
+    height:120px;
     display:block;
     object-fit:contain;
+    background:transparent;
     user-select:none;
     -webkit-user-drag:none;
 
