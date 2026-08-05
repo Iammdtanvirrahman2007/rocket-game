@@ -8,6 +8,10 @@ import {
     getTotalMass
 } from "./rocketBuilder.js";
 
+// ======================================
+// Initialize Drag & Drop
+// ======================================
+
 export function initDragAndDrop() {
 
     const loader = document.getElementById("part-loader");
@@ -62,21 +66,22 @@ export function initDragAndDrop() {
 
 }
 
-// =========================
+// ======================================
 // Add Part
-// =========================
+// ======================================
 
 function assemblePart(partData) {
 
-    const dropZone = document.getElementById("drop-zone");
+    const result = addPart(partData);
 
-    const placeholder = dropZone.querySelector("p");
+    // Attach rule failed
+    if (!result) {
 
-    if (placeholder) {
-        placeholder.style.display = "none";
+        alert("❌ This part cannot be attached here.");
+
+        return;
+
     }
-
-    addPart(partData);
 
     renderRocket();
 
@@ -84,9 +89,9 @@ function assemblePart(partData) {
 
 }
 
-// =========================
+// ======================================
 // Remove Part
-// =========================
+// ======================================
 
 export function removeRocketPart(uid) {
 
@@ -98,23 +103,23 @@ export function removeRocketPart(uid) {
 
 }
 
-// =========================
+// ======================================
 // Update Status
-// =========================
+// ======================================
 
 function updateStats() {
 
-    document.getElementById("stat-parts").innerText =
+    document.getElementById("stat-parts").textContent =
         getRocket().length;
 
-    document.getElementById("stat-mass").innerText =
+    document.getElementById("stat-mass").textContent =
         getTotalMass().toFixed(1) + "t";
 
 }
 
-// =========================
-// Save
-// =========================
+// ======================================
+// Save Rocket
+// ======================================
 
 export function getRocketData() {
 
