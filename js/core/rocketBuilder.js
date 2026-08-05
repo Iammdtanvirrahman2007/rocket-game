@@ -1,6 +1,8 @@
 // ======================================
-// Rocket Builder Engine v2
+// Rocket Builder Engine v3
 // ======================================
+
+import { canAttach } from "./nodeSystem.js";
 
 let rocket = [];
 
@@ -46,10 +48,33 @@ export function addPart(part) {
 
     };
 
-    // আপাতত নিচে stack হবে
-    if (rocket.length > 0) {
+    // ===========================
+    // First Part
+    // ===========================
+
+    if (rocket.length === 0) {
+
+        if (!canAttach(null, newPart)) {
+
+            return null;
+
+        }
+
+    }
+
+    // ===========================
+    // Attach To Previous Part
+    // ===========================
+
+    else {
 
         const parent = rocket[rocket.length - 1];
+
+        if (!canAttach(parent, newPart)) {
+
+            return null;
+
+        }
 
         newPart.parent = parent.uid;
 
@@ -64,7 +89,7 @@ export function addPart(part) {
 }
 
 /**
- * পার্ট ডিলিট
+ * Remove Part
  */
 export function removePart(uid) {
 
@@ -72,7 +97,7 @@ export function removePart(uid) {
 
     if (!part) return;
 
-    // Parent থেকে remove
+    // Parent থেকে Child Remove
     if (part.parent) {
 
         const parent = getPart(part.parent);
@@ -86,7 +111,7 @@ export function removePart(uid) {
 
     }
 
-    // Children-এর parent reset
+    // Children Orphan
     part.children.forEach(childId => {
 
         const child = getPart(childId);
@@ -104,7 +129,7 @@ export function removePart(uid) {
 }
 
 /**
- * সব পার্ট
+ * সব Part
  */
 export function getRocket() {
 
@@ -113,16 +138,18 @@ export function getRocket() {
 }
 
 /**
- * UID দিয়ে পার্ট খোঁজা
+ * UID দিয়ে Part
  */
 export function getPart(uid) {
 
-    return rocket.find(part => part.uid === uid);
+    return rocket.find(
+        part => part.uid === uid
+    );
 
 }
 
 /**
- * Index দিয়ে পার্ট
+ * Index দিয়ে Part
  */
 export function getPartByIndex(index) {
 
@@ -137,7 +164,9 @@ export function getParent(uid) {
 
     const part = getPart(uid);
 
-    if (!part || !part.parent) return null;
+    if (!part) return null;
+
+    if (!part.parent) return null;
 
     return getPart(part.parent);
 
@@ -159,26 +188,11 @@ export function getChildren(uid) {
 }
 
 /**
- * পুরো রকেট পরিষ্কার
+ * Root Part
  */
-export function clearRocket() {
+export function getRootPart() {
 
-    rocket = [];
-
-}
-
-/**
- * মোট Mass
- */
-export function getTotalMass() {
-
-    return rocket.reduce(
-
-        (sum, part) => sum + part.stats.mass,
-
-        0
-
-    );
+    return rocket[0] || null;
 
 }
 
@@ -192,10 +206,47 @@ export function getRocketHeight() {
 }
 
 /**
- * Rocket Root
+ * Total Mass
  */
-export function getRootPart() {
+export function getTotalMass() {
 
-    return rocket[0] || null;
+    return rocket.reduce(
+
+        (sum, part) => {
+
+            return sum + part.stats.mass;
+
+        },
+
+        0
+
+    );
+
+}
+
+/**
+ * Clear Rocket
+ */
+export function clearRocket() {
+
+    rocket = [];
+
+}
+
+/**
+ * Rocket Exists?
+ */
+export function hasRocket() {
+
+    return rocket.length > 0;
+
+}
+
+/**
+ * Rocket Count
+ */
+export function getPartCount() {
+
+    return rocket.length;
 
 }
