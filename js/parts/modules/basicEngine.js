@@ -2,7 +2,9 @@ export const basicEngine = {
     id: 'basic-engine',
     name: 'Reliant Liquid Engine',
     type: 'engine',
-    icon: '🔥',
+
+    image: 'assets/parts/basic-engine.png',
+
     stats: {
         mass: 2.0
     }
