@@ -12,7 +12,7 @@ export function renderRocket() {
     if (!dropZone) return;
 
     // Placeholder
-    const placeholder = dropZone.querySelector("p");
+    const placeholder = dropZone.querySelector(".placeholder");
 
     // পুরনো rocket remove
     dropZone.querySelectorAll(".rocket-part").forEach(part => {
@@ -53,17 +53,22 @@ export function renderRocket() {
 
         div.dataset.uid = part.uid;
 
-        // Auto stack position
-       const y = index * 110 + 80;
+        // ---------------------------------
+        // Stack Position
+        // ---------------------------------
 
-/* 2D body এর center এ বসবে */
-div.style.left = `${centerX - 60}px`;
-div.style.top  = `${y}px`;
+        // 110 ছিল, তাই gap বেশি হচ্ছিল
+        const y = index * 92 + 55;
+
+        // 120px image width => half = 60px
+        div.style.left = `${centerX - 60}px`;
+        div.style.top = `${y}px`;
 
         div.innerHTML = `
             <img src="${part.image}" alt="${part.name}">
 
-            <button class="delete-btn" title="Remove Part">
+            <button class="delete-btn"
+                    title="Remove Part">
                 ✖
             </button>
         `;
