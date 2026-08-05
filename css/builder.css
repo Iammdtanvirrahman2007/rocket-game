@@ -340,3 +340,26 @@
 
     font-weight:bold;
 }
+.rocket-part{
+
+    display:flex;
+
+    justify-content:center;
+
+    margin:-8px 0;
+
+}
+
+.rocket-part img{
+
+    width:120px;
+
+    height:auto;
+
+    display:block;
+
+    user-select:none;
+
+    pointer-events:none;
+
+}
