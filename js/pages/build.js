@@ -1,6 +1,7 @@
 import { navigateTo } from '../core/router.js';
 import { loadPartsToSidebar } from '../parts/registry.js';
-import { initDragAndDrop, getRocketData } from '../core/dragManager.js'; // getRocketData এখানেই ইম্পোর্ট করা হয়েছে
+import { initDragAndDrop, getRocketData } from '../core/dragManager.js';
+import { saveRocketToCloud } from '../core/firebaseConfig.js';
 
 export function getHTML() {
     return `
@@ -12,7 +13,6 @@ export function getHTML() {
                 </div>
                 <div id="part-loader" class="part-list">
                     <p>Loading parts...</p>
-                    <!-- Parts will be dynamically injected here later -->
                 </div>
             </aside>
 
@@ -22,7 +22,7 @@ export function getHTML() {
                     <button id="btn-back" class="secondary-btn">← Back to Menu</button>
                     <h2>Vehicle Assembly</h2>
                     <div>
-                        <button id="btn-save" class="secondary-btn">Save</button>
+                        <button id="btn-save" class="secondary-btn">Save to Cloud ☁️</button>
                         <button id="btn-launch" class="primary-btn">LAUNCH 🚀</button>
                     </div>
                 </header>
@@ -45,24 +45,17 @@ export function getHTML() {
 export function init() {
     console.log("🛠️ Builder Module Initialized");
 
-    // Back to Home Logic
-    const backBtn = document.getElementById('btn-back');
-    if (backBtn) {
-        backBtn.addEventListener('click', () => {
-            navigateTo('home');
-        });
-    }
+    document.getElementById('btn-back')?.addEventListener('click', () => {
+        navigateTo('home');
+    });
 
-    // ১. সাইডবারে পার্টস লোড করা
     loadPartsToSidebar();
-
-    // ২. ড্র্যাগ অ্যান্ড ড্রপ অ্যাক্টিভ করা
     initDragAndDrop();
 
-    // ৩. Save Button Logic
+    // Cloud Save Button Logic
     const saveBtn = document.getElementById('btn-save');
     if (saveBtn) {
-        saveBtn.addEventListener('click', () => {
+        saveBtn.addEventListener('click', async () => {
             const rocketData = getRocketData();
             
             if (rocketData.parts.length === 0) {
@@ -70,8 +63,19 @@ export function init() {
                 return;
             }
 
-            console.log("💾 Saving Rocket Data:", JSON.stringify(rocketData, null, 2));
-            alert("Rocket data generated! (Check console for JSON).");
+            saveBtn.innerText = "Saving...";
+            saveBtn.disabled = true;
+
+            const result = await saveRocketToCloud(rocketData);
+
+            if (result.success) {
+                alert(`🎉 Rocket successfully saved to Cloud! ID: ${result.id}`);
+            } else {
+                alert(`❌ Failed to save: ${result.error}`);
+            }
+
+            saveBtn.innerText = "Save to Cloud ☁️";
+            saveBtn.disabled = false;
         });
     }
 }
