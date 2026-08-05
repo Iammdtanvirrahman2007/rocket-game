@@ -1,4 +1,6 @@
 import { navigateTo } from '../core/router.js';
+import { loadPartsToSidebar } from '../parts/registry.js';
+import { initDragAndDrop, getRocketData } from '../core/dragManager.js'; // getRocketData এখানেই ইম্পোর্ট করা হয়েছে
 
 export function getHTML() {
     return `
@@ -51,11 +53,25 @@ export function init() {
         });
     }
 
-    // Launch Button Logic (Placeholder for future)
-    const launchBtn = document.getElementById('btn-launch');
-    if (launchBtn) {
-        launchBtn.addEventListener('click', () => {
-            alert("Launch sequence initiated! (Launch module coming soon)");
+    // ১. সাইডবারে পার্টস লোড করা
+    loadPartsToSidebar();
+
+    // ২. ড্র্যাগ অ্যান্ড ড্রপ অ্যাক্টিভ করা
+    initDragAndDrop();
+
+    // ৩. Save Button Logic
+    const saveBtn = document.getElementById('btn-save');
+    if (saveBtn) {
+        saveBtn.addEventListener('click', () => {
+            const rocketData = getRocketData();
+            
+            if (rocketData.parts.length === 0) {
+                alert("Cannot save an empty rocket! Add some parts first.");
+                return;
+            }
+
+            console.log("💾 Saving Rocket Data:", JSON.stringify(rocketData, null, 2));
+            alert("Rocket data generated! (Check console for JSON).");
         });
     }
 }
