@@ -285,42 +285,37 @@
 /* =====================================
    DELETE BUTTON
 ===================================== */
-
 .delete-btn{
-
     position:absolute;
 
-    top:5px;
+    top:4px;
+    right:4px;
 
-    right:5px;
-
-    width:22px;
-
-    height:22px;
+    width:18px;
+    height:18px;
 
     border:none;
-
     border-radius:50%;
 
-    background:#ff4b4b;
-
+    background:#e53935;
     color:#fff;
+
+    font-size:12px;
+    font-weight:bold;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
     cursor:pointer;
 
     opacity:0;
 
-    transition:.2s;
+    transition:0.2s;
 }
 
 .assembled-part:hover .delete-btn{
-
     opacity:1;
-}
-
-.delete-btn:hover{
-
-    transform:scale(1.1);
 }
 
 /* =====================================
