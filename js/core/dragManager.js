@@ -2,39 +2,39 @@ import { getPartById } from '../parts/registry.js';
 
 // রকেটের বর্তমান স্টেট ধরে রাখার জন্য একটি Array
 export let currentRocket = [];
-let totalMass = 0;
 
 export function initDragAndDrop() {
     const loader = document.getElementById('part-loader');
     const dropZone = document.getElementById('drop-zone');
-    
-    // ১. সাইডবার থেকে ড্র্যাগ শুরু
+
+    // Sidebar থেকে Drag শুরু
     loader.addEventListener('dragstart', (e) => {
-        if (e.target.classList.contains('part-item')) {
-            e.dataTransfer.setData('part-id', e.target.dataset.id);
-            e.dataTransfer.effectAllowed = 'copy';
-        }
+        const partItem = e.target.closest('.part-item');
+        if (!partItem) return;
+
+        e.dataTransfer.setData('part-id', partItem.dataset.id);
+        e.dataTransfer.effectAllowed = 'copy';
     });
 
-    // ২. ড্রপ জোনের হাইলাইট
+    // Drop Zone Highlight
     dropZone.addEventListener('dragover', (e) => {
         e.preventDefault();
         e.dataTransfer.dropEffect = 'copy';
-        dropZone.style.backgroundColor = 'rgba(216, 228, 255, 0.5)';
+        dropZone.style.backgroundColor = 'rgba(216,228,255,0.5)';
     });
 
     dropZone.addEventListener('dragleave', () => {
         dropZone.style.backgroundColor = 'transparent';
     });
 
-    // ৩. ড্রপ জোন - পার্ট অ্যাসেম্বল করা
+    // Part Drop
     dropZone.addEventListener('drop', (e) => {
         e.preventDefault();
         dropZone.style.backgroundColor = 'transparent';
-        
+
         const partId = e.dataTransfer.getData('part-id');
         const partData = getPartById(partId);
-        
+
         if (partData) {
             assemblePart(partData);
         }
@@ -42,74 +42,96 @@ export function initDragAndDrop() {
 }
 
 function assemblePart(partData) {
+
     const dropZone = document.getElementById('drop-zone');
-    
-    // Placeholder সরানো
+
+    // Placeholder Hide
     const placeholder = dropZone.querySelector('p');
     if (placeholder) placeholder.style.display = 'none';
 
-    // রকেটের ডাটা অ্যারেতে পুশ করা (unique ID সহ, যাতে ডিলিট করতে সুবিধা হয়)
-    const uniqueId = 'part_' + Date.now(); 
+    const uniqueId = 'part_' + Date.now();
+
     currentRocket.push({
         uid: uniqueId,
         id: partData.id,
         name: partData.name,
+        image: partData.image,
         stats: partData.stats
     });
 
-    // নতুন এলিমেন্ট তৈরি করা
+    // Rocket Part
     const assembledPart = document.createElement('div');
     assembledPart.className = `assembled-part ${partData.id}`;
     assembledPart.id = uniqueId;
+
     assembledPart.innerHTML = `
-        <span>${partData.name}</span>
-        <button class="delete-btn" title="Remove Part">✖</button>
+        <div class="assembled-image">
+            <img src="${partData.image}" alt="${partData.name}">
+        </div>
+
+        <div class="assembled-name">
+            ${partData.name}
+        </div>
+
+        <button class="delete-btn" title="Remove Part">
+            ✖
+        </button>
     `;
-    
-    // ডিলিট বাটনে ক্লিক ইভেন্ট যুক্ত করা
-    assembledPart.querySelector('.delete-btn').addEventListener('click', () => {
-        removePart(uniqueId, partData, assembledPart);
-    });
+
+    // Delete
+    assembledPart
+        .querySelector('.delete-btn')
+        .addEventListener('click', () => {
+            removePart(uniqueId, assembledPart);
+        });
 
     dropZone.appendChild(assembledPart);
+
     updateStats();
 }
 
-function removePart(uniqueId, partData, element) {
-    // ১. DOM থেকে রিমুভ করা
+function removePart(uniqueId, element) {
+
     element.remove();
-    
-    // ২. রকেট ডাটাবেস (Array) থেকে রিমুভ করা
-    currentRocket = currentRocket.filter(part => part.uid !== uniqueId);
-    
-    // ৩. স্ট্যাটাস আপডেট করা
+
+    currentRocket = currentRocket.filter(
+        part => part.uid !== uniqueId
+    );
+
     updateStats();
 
-    // ৪. যদি সব পার্ট ডিলিট হয়ে যায়, তাহলে placeholder আবার দেখানো
     if (currentRocket.length === 0) {
         const dropZone = document.getElementById('drop-zone');
         const placeholder = dropZone.querySelector('p');
-        if (placeholder) placeholder.style.display = 'block';
+
+        if (placeholder) {
+            placeholder.style.display = 'block';
+        }
     }
 }
 
-// স্ট্যাটাস বার রিক্যালকুলেট করার ফাংশন
 function updateStats() {
+
     let mass = 0;
-    
+
     currentRocket.forEach(part => {
         mass += part.stats.mass;
     });
 
-    document.getElementById('stat-parts').innerText = currentRocket.length;
-    document.getElementById('stat-mass').innerText = mass.toFixed(1) + 't';
+    document.getElementById('stat-parts').innerText =
+        currentRocket.length;
+
+    document.getElementById('stat-mass').innerText =
+        mass.toFixed(1) + 't';
 }
 
-// সেভ করার জন্য JSON জেনারেট করার ফাংশন (অন্য ফাইল থেকে কল করা হবে)
+// Cloud Save
 export function getRocketData() {
     return {
         name: "Untitled Rocket",
-        totalMass: parseFloat(document.getElementById('stat-mass').innerText),
+        totalMass: parseFloat(
+            document.getElementById('stat-mass').innerText
+        ),
         parts: currentRocket
     };
 }
