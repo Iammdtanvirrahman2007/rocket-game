@@ -54,11 +54,11 @@ export function renderRocket() {
         div.dataset.uid = part.uid;
 
         // Auto stack position
-        const y = index * 110 + 40;
+       const y = index * 110 + 80;
 
-        // Center align
-        div.style.left = `${centerX - 60}px`;
-        div.style.top = `${y}px`;
+/* 2D body এর center এ বসবে */
+div.style.left = `${centerX - 60}px`;
+div.style.top  = `${y}px`;
 
         div.innerHTML = `
             <img src="${part.image}" alt="${part.name}">
