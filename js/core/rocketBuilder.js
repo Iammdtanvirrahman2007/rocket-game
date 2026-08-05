@@ -1,5 +1,5 @@
 // ======================================
-// Rocket Builder Engine v1
+// Rocket Builder Engine v2
 // ======================================
 
 let rocket = [];
@@ -10,16 +10,28 @@ let rocket = [];
 export function addPart(part) {
 
     const newPart = {
+
         uid: crypto.randomUUID(),
 
         id: part.id,
-        name: part.name,
 
-        image: part.image,
+        name: part.name,
 
         type: part.type,
 
-        stats: part.stats,
+        image: part.image,
+
+        stats: {
+            ...part.stats
+        },
+
+        attachNodes: {
+            ...part.attachNodes
+        },
+
+        size: {
+            ...part.size
+        },
 
         parent: null,
 
@@ -31,66 +43,159 @@ export function addPart(part) {
         },
 
         rotation: 0
+
     };
+
+    // আপাতত নিচে stack হবে
+    if (rocket.length > 0) {
+
+        const parent = rocket[rocket.length - 1];
+
+        newPart.parent = parent.uid;
+
+        parent.children.push(newPart.uid);
+
+    }
 
     rocket.push(newPart);
 
     return newPart;
+
 }
 
 /**
  * পার্ট ডিলিট
  */
+export function removePart(uid) {
 
-export function removePart(uid){
+    const part = getPart(uid);
 
-    rocket = rocket.filter(
-        part => part.uid !== uid
-    );
+    if (!part) return;
+
+    // Parent থেকে remove
+    if (part.parent) {
+
+        const parent = getPart(part.parent);
+
+        if (parent) {
+
+            parent.children =
+                parent.children.filter(id => id !== uid);
+
+        }
+
+    }
+
+    // Children-এর parent reset
+    part.children.forEach(childId => {
+
+        const child = getPart(childId);
+
+        if (child) {
+
+            child.parent = null;
+
+        }
+
+    });
+
+    rocket = rocket.filter(p => p.uid !== uid);
+
 }
 
 /**
  * সব পার্ট
  */
-
-export function getRocket(){
+export function getRocket() {
 
     return rocket;
+
 }
 
 /**
- * UID দিয়ে পার্ট খুঁজে বের করা
+ * UID দিয়ে পার্ট খোঁজা
  */
+export function getPart(uid) {
 
-export function getPart(uid){
+    return rocket.find(part => part.uid === uid);
 
-    return rocket.find(
-        part => part.uid === uid
-    );
 }
 
 /**
- * পুরো রকেট ক্লিয়ার
+ * Index দিয়ে পার্ট
  */
+export function getPartByIndex(index) {
 
-export function clearRocket(){
+    return rocket[index];
+
+}
+
+/**
+ * Parent
+ */
+export function getParent(uid) {
+
+    const part = getPart(uid);
+
+    if (!part || !part.parent) return null;
+
+    return getPart(part.parent);
+
+}
+
+/**
+ * Children
+ */
+export function getChildren(uid) {
+
+    const part = getPart(uid);
+
+    if (!part) return [];
+
+    return part.children
+        .map(id => getPart(id))
+        .filter(Boolean);
+
+}
+
+/**
+ * পুরো রকেট পরিষ্কার
+ */
+export function clearRocket() {
 
     rocket = [];
+
 }
 
 /**
  * মোট Mass
  */
+export function getTotalMass() {
 
-export function getTotalMass(){
+    return rocket.reduce(
 
-    let total = 0;
+        (sum, part) => sum + part.stats.mass,
 
-    rocket.forEach(part=>{
+        0
 
-        total += part.stats.mass;
+    );
 
-    });
+}
 
-    return total;
+/**
+ * Rocket Height
+ */
+export function getRocketHeight() {
+
+    return rocket.length;
+
+}
+
+/**
+ * Rocket Root
+ */
+export function getRootPart() {
+
+    return rocket[0] || null;
+
 }
