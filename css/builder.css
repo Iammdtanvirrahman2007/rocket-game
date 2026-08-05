@@ -124,3 +124,39 @@
     gap: 30px;
     font-weight: bold;
 }
+/* Assembled Parts Update */
+.assembled-part {
+    width: 180px;
+    padding: 15px;
+    margin: 2px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    font-weight: bold;
+    background-color: #fff;
+    border: 2px solid var(--ink);
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    position: relative;
+}
+
+/* Delete Button Style */
+.delete-btn {
+    background: transparent;
+    border: none;
+    color: var(--danger);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0 5px;
+    opacity: 0; /* নরমালি লুকানো থাকবে */
+    transition: 0.2s;
+}
+
+/* হোভার করলে ডিলিট বাটন দেখাবে */
+.assembled-part:hover .delete-btn {
+    opacity: 1;
+}
+
+.delete-btn:hover {
+    transform: scale(1.2);
+}
