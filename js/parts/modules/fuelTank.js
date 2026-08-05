@@ -6,7 +6,7 @@ export const fuelTank = {
 
     type: "tank",
 
-    image: "./assets/parts/fuel_tank.png",
+    image: "./assets/parts/fuel-tank.png",
 
     stats: {
         mass: 1.5
