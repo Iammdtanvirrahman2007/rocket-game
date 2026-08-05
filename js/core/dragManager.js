@@ -1,137 +1,186 @@
 import { getPartById } from '../parts/registry.js';
-
-// রকেটের বর্তমান স্টেট ধরে রাখার জন্য একটি Array
-export let currentRocket = [];
+import {
+    addPart,
+    removePart,
+    getRocket,
+    getTotalMass
+} from './rocketBuilder.js';
 
 export function initDragAndDrop() {
+
     const loader = document.getElementById('part-loader');
     const dropZone = document.getElementById('drop-zone');
 
-    // Sidebar থেকে Drag শুরু
+    // Drag Start
     loader.addEventListener('dragstart', (e) => {
+
         const partItem = e.target.closest('.part-item');
+
         if (!partItem) return;
 
-        e.dataTransfer.setData('part-id', partItem.dataset.id);
+        e.dataTransfer.setData(
+            'part-id',
+            partItem.dataset.id
+        );
+
         e.dataTransfer.effectAllowed = 'copy';
+
     });
 
-    // Drop Zone Highlight
+    // Drag Over
     dropZone.addEventListener('dragover', (e) => {
+
         e.preventDefault();
-        e.dataTransfer.dropEffect = 'copy';
-        dropZone.style.backgroundColor = 'rgba(216,228,255,0.5)';
+
+        dropZone.style.backgroundColor =
+            'rgba(216,228,255,.35)';
+
     });
 
+    // Drag Leave
     dropZone.addEventListener('dragleave', () => {
-        dropZone.style.backgroundColor = 'transparent';
+
+        dropZone.style.backgroundColor = '';
+
     });
 
-    // Part Drop
+    // Drop
     dropZone.addEventListener('drop', (e) => {
+
         e.preventDefault();
-        dropZone.style.backgroundColor = 'transparent';
 
-        const partId = e.dataTransfer.getData('part-id');
-        const partData = getPartById(partId);
+        dropZone.style.backgroundColor = '';
 
-        if (partData) {
-            assemblePart(partData);
-        }
+        const id =
+            e.dataTransfer.getData('part-id');
+
+        const part =
+            getPartById(id);
+
+        if (!part) return;
+
+        assemblePart(part);
+
     });
+
 }
 
-function assemblePart(partData) {
+function assemblePart(partData){
 
-    const dropZone = document.getElementById('drop-zone');
+    const dropZone =
+        document.getElementById('drop-zone');
 
-    // Placeholder Hide
-    const placeholder = dropZone.querySelector('p');
-    if (placeholder) placeholder.style.display = 'none';
+    const placeholder =
+        dropZone.querySelector('p');
 
-    const uniqueId = 'part_' + Date.now();
+    if(placeholder){
 
-    currentRocket.push({
-        uid: uniqueId,
-        id: partData.id,
-        name: partData.name,
-        image: partData.image,
-        stats: partData.stats
-    });
+        placeholder.style.display='none';
 
-    // Rocket Part
-    const assembledPart = document.createElement('div');
-    assembledPart.className = `assembled-part ${partData.id}`;
-    assembledPart.id = uniqueId;
+    }
 
-    assembledPart.innerHTML = `
+    // Data Save
+    const rocketPart =
+        addPart(partData);
+
+    // UI
+    const part =
+        document.createElement('div');
+
+    part.className='assembled-part';
+
+    part.dataset.uid=rocketPart.uid;
+
+    part.innerHTML=`
+
         <div class="assembled-image">
-            <img src="${partData.image}" alt="${partData.name}">
+
+            <img
+                src="${rocketPart.image}"
+                alt="${rocketPart.name}"
+            >
+
         </div>
 
         <div class="assembled-name">
-            ${partData.name}
+
+            ${rocketPart.name}
+
         </div>
 
-        <button class="delete-btn" title="Remove Part">
+        <button
+            class="delete-btn">
+
             ✖
+
         </button>
+
     `;
 
-    // Delete
-    assembledPart
-        .querySelector('.delete-btn')
-        .addEventListener('click', () => {
-            removePart(uniqueId, assembledPart);
-        });
+    part
+    .querySelector('.delete-btn')
+    .addEventListener('click',()=>{
 
-    dropZone.appendChild(assembledPart);
+        removeRocketPart(
+            rocketPart.uid,
+            part
+        );
+
+    });
+
+    dropZone.appendChild(part);
 
     updateStats();
+
 }
 
-function removePart(uniqueId, element) {
+function removeRocketPart(uid,element){
+
+    removePart(uid);
 
     element.remove();
 
-    currentRocket = currentRocket.filter(
-        part => part.uid !== uniqueId
-    );
+    if(getRocket().length===0){
+
+        const placeholder=
+            document
+            .querySelector('#drop-zone p');
+
+        if(placeholder){
+
+            placeholder.style.display='block';
+
+        }
+
+    }
 
     updateStats();
 
-    if (currentRocket.length === 0) {
-        const dropZone = document.getElementById('drop-zone');
-        const placeholder = dropZone.querySelector('p');
-
-        if (placeholder) {
-            placeholder.style.display = 'block';
-        }
-    }
 }
 
-function updateStats() {
+function updateStats(){
 
-    let mass = 0;
+    document
+    .getElementById('stat-parts')
+    .innerText=getRocket().length;
 
-    currentRocket.forEach(part => {
-        mass += part.stats.mass;
-    });
+    document
+    .getElementById('stat-mass')
+    .innerText=
+    getTotalMass().toFixed(1)+'t';
 
-    document.getElementById('stat-parts').innerText =
-        currentRocket.length;
-
-    document.getElementById('stat-mass').innerText =
-        mass.toFixed(1) + 't';
 }
 
-// Cloud Save
-export function getRocketData() {
-    return {
-        name: "Untitled Rocket",
-        totalMass: parseFloat(
-            document.getElementById('stat-mass').innerText
-        ),
-        parts: currentRocket
+export function getRocketData(){
+
+    return{
+
+        name:'Untitled Rocket',
+
+        totalMass:getTotalMass(),
+
+        parts:getRocket()
+
     };
+
 }
