@@ -1,0 +1,86 @@
+/* Builder Layout */
+.builder-layout {
+    display: flex;
+    height: calc(100vh - 40px); /* নিচে স্ট্যাটাস বারের জন্য ৪০পিক্সেল জায়গা রাখা হয়েছে */
+    width: 100vw;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 300px;
+    background-color: var(--panel);
+    border-right: 2px solid var(--panel-border);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* খাতার লাল মার্জিন দাগ */
+.sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 40px;
+    width: 2px;
+    background-color: var(--danger);
+    opacity: 0.5;
+}
+
+.sidebar-header {
+    padding: 20px 10px 20px 55px;
+    border-bottom: 2px dashed var(--panel-border);
+}
+
+.part-list {
+    flex-grow: 1;
+    padding: 20px 10px 20px 55px;
+    overflow-y: auto;
+}
+
+/* Main Workspace (Blueprint canvas) */
+.workspace {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    /* খাতার নীল দাগ তৈরি করা হচ্ছে */
+    background-image: repeating-linear-gradient(
+        transparent,
+        transparent 24px,
+        var(--paper-line) 25px
+    );
+    background-size: 100% 25px;
+}
+
+.toolbar {
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    border-bottom: 2px dashed var(--panel-border);
+    background: rgba(246, 240, 223, 0.8);
+}
+
+.assembly-area {
+    flex-grow: 1;
+    margin: 20px;
+    border: 3px dashed var(--panel-border);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* Status Bar */
+.statusbar {
+    height: 40px;
+    background-color: var(--panel);
+    border-top: 2px solid var(--panel-border);
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 30px;
+    font-weight: bold;
+}
