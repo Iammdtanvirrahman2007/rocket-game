@@ -139,22 +139,25 @@
 ===================================== */
 
 #drop-zone{
-    min-height:100%;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:flex-start;
-    gap:0;
-    padding:30px;
-}
 
+    position:relative;
+
+    width:100%;
+
+    height:100%;
+
+    overflow:auto;
+
+}
 /* =====================================
    ROCKET PART
 ===================================== */
 
 .rocket-part{
     position:relative;
-    display:flex;
+    position:absolute;
+
+display:flex;
     justify-content:center;
     align-items:center;
     margin:-8px 0;
