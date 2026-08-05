@@ -1,28 +1,28 @@
-/* ===========================
+/* =====================================
    BUILDER LAYOUT
-=========================== */
+===================================== */
 
 .builder-layout{
     display:flex;
-    height:calc(100vh - 40px);
     width:100%;
+    height:calc(100vh - 40px);
 }
 
-/* ===========================
+/* =====================================
    SIDEBAR
-=========================== */
+===================================== */
 
 .sidebar{
     width:320px;
     background:#f7f3e8;
-    border-right:2px solid #444;
+    border-right:2px solid #555;
     display:flex;
     flex-direction:column;
 }
 
 .sidebar-header{
     padding:20px;
-    border-bottom:2px solid #999;
+    border-bottom:2px solid #bfbfbf;
 }
 
 .part-list{
@@ -31,50 +31,50 @@
     padding:15px;
 }
 
-/* ===========================
+/* =====================================
    PART CARD
-=========================== */
+===================================== */
 
 .part-item{
     display:flex;
     align-items:center;
-    gap:15px;
+    gap:12px;
 
-    padding:12px;
-    margin-bottom:12px;
+    padding:10px;
+    margin-bottom:10px;
 
-    background:white;
+    background:#fff;
 
     border:2px solid #444;
     border-radius:10px;
 
     cursor:grab;
 
-    transition:.25s;
+    transition:.2s;
 }
 
 .part-item:hover{
 
-    transform:translateY(-3px);
+    transform:translateY(-2px);
 
-    box-shadow:0 8px 18px rgba(0,0,0,.15);
+    box-shadow:0 8px 15px rgba(0,0,0,.15);
 }
 
 .part-item:active{
 
     cursor:grabbing;
 
-    transform:scale(.97);
+    transform:scale(.98);
 }
 
-/* ===========================
-   ICON
-=========================== */
+/* =====================================
+   SIDEBAR IMAGE
+===================================== */
 
 .part-icon{
 
-    width:70px;
-    height:70px;
+    width:60px;
+    height:60px;
 
     display:flex;
     justify-content:center;
@@ -85,15 +85,14 @@
 
 .part-icon img{
 
-    width:64px;
-    height:64px;
+    max-width:55px;
+    max-height:55px;
+
+    width:auto;
+    height:auto;
 
     object-fit:contain;
 }
-
-/* ===========================
-   DETAILS
-=========================== */
 
 .part-details{
 
@@ -103,21 +102,22 @@
 .part-details h4{
 
     margin:0;
-    font-size:16px;
+
+    font-size:15px;
 }
 
 .part-details p{
 
-    margin-top:6px;
+    margin-top:5px;
+
+    font-size:12px;
 
     color:#666;
-
-    font-size:13px;
 }
 
-/* ===========================
+/* =====================================
    WORKSPACE
-=========================== */
+===================================== */
 
 .workspace{
 
@@ -135,14 +135,14 @@
 
         transparent 24px,
 
-        rgba(0,0,255,.08) 25px
+        rgba(0,70,255,.08) 25px
 
     );
 }
 
-/* ===========================
+/* =====================================
    TOOLBAR
-=========================== */
+===================================== */
 
 .toolbar{
 
@@ -156,14 +156,14 @@
 
     padding:0 20px;
 
-    border-bottom:2px solid #999;
-
     background:#f7f3e8;
+
+    border-bottom:2px solid #bbb;
 }
 
-/* ===========================
+/* =====================================
    ASSEMBLY AREA
-=========================== */
+===================================== */
 
 .assembly-area{
 
@@ -171,18 +171,16 @@
 
     margin:20px;
 
-    border:3px dashed #666;
+    border:3px dashed #777;
 
-    border-radius:12px;
-
-    position:relative;
+    border-radius:10px;
 
     overflow:auto;
 }
 
-/* ===========================
+/* =====================================
    DROP ZONE
-=========================== */
+===================================== */
 
 #drop-zone{
 
@@ -196,24 +194,26 @@
 
     justify-content:flex-start;
 
-    padding-top:50px;
+    gap:5px;
 
-    gap:6px;
+    padding:20px;
 }
 
-/* ===========================
+/* =====================================
    ROCKET PART
-=========================== */
+===================================== */
 
 .assembled-part{
 
-    width:190px;
+    width:100px;
 
-    background:white;
+    min-height:120px;
+
+    background:#fff;
 
     border:2px solid #333;
 
-    border-radius:10px;
+    border-radius:8px;
 
     display:flex;
 
@@ -221,78 +221,96 @@
 
     align-items:center;
 
-    padding:12px;
+    justify-content:center;
+
+    padding:6px;
 
     position:relative;
 
-    transition:.25s;
+    transition:.2s;
 }
 
 .assembled-part:hover{
 
     transform:scale(1.03);
 
-    box-shadow:0 10px 20px rgba(0,0,0,.2);
+    box-shadow:0 8px 15px rgba(0,0,0,.18);
 }
 
-.assembled-image{
+/* =====================================
+   ROCKET IMAGE
+===================================== */
 
-    width:100%;
+.assembled-image{
 
     display:flex;
 
     justify-content:center;
 
     align-items:center;
+
+    width:100%;
 }
 
 .assembled-image img{
 
-    width:110px;
+    max-width:55px;
 
-    height:110px;
+    max-height:80px;
+
+    width:auto;
+
+    height:auto;
 
     object-fit:contain;
 }
 
+/* =====================================
+   NAME
+===================================== */
+
 .assembled-name{
 
-    margin-top:10px;
-
-    font-weight:bold;
+    margin-top:5px;
 
     text-align:center;
+
+    font-size:11px;
+
+    font-weight:600;
+
+    line-height:1.2;
 }
 
-/* ===========================
+/* =====================================
    DELETE BUTTON
-=========================== */
+===================================== */
 
 .delete-btn{
 
     position:absolute;
 
-    top:6px;
+    top:5px;
 
-    right:6px;
+    right:5px;
 
-    width:26px;
+    width:22px;
 
-    height:26px;
+    height:22px;
 
     border:none;
 
     border-radius:50%;
 
-    background:#ff4d4d;
+    background:#ff4b4b;
 
-    color:white;
+    color:#fff;
 
     cursor:pointer;
 
     opacity:0;
 
-    transition:.25s;
+    transition:.2s;
 }
 
 .assembled-part:hover .delete-btn{
@@ -302,12 +320,12 @@
 
 .delete-btn:hover{
 
-    transform:scale(1.15);
+    transform:scale(1.1);
 }
 
-/* ===========================
+/* =====================================
    STATUS BAR
-=========================== */
+===================================== */
 
 .statusbar{
 
@@ -323,7 +341,7 @@
 
     background:#f7f3e8;
 
-    border-top:2px solid #999;
+    border-top:2px solid #bbb;
 
     font-weight:bold;
 }
