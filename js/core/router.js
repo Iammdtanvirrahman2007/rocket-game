@@ -1,24 +1,61 @@
 export async function navigateTo(pageName) {
-    const appContainer = document.getElementById('app');
-    
-    // পেজ লোড হওয়ার সময় একটি লোডিং টেক্সট দেখাবে
-    appContainer.innerHTML = '<h2 style="color: white; text-align: center;">Loading Module...</h2>';
+
+    const appContainer = document.getElementById("app");
+
+    appContainer.innerHTML = `
+        <h2 style="color:white;text-align:center;">
+            Loading Module...
+        </h2>
+    `;
 
     try {
-        // ডায়নামিক ইম্পোর্ট: যখন যে পেজ লাগবে, শুধু সেই পেজের JS ফাইল লোড করবে
+
         const pageModule = await import(`../pages/${pageName}.js`);
-        
-        // ১. ওই পেজের HTML ডিজাইন কন্টেইনারে বসাবে
+
         appContainer.innerHTML = pageModule.getHTML();
-        
-        // ২. ওই পেজের বাটন ও অন্যান্য লজিক অ্যাক্টিভ করবে
+
         if (pageModule.init) {
             pageModule.init();
         }
-        
+
         console.log(`✅ Loaded Page: ${pageName}`);
+
     } catch (error) {
-        console.error(`❌ Error loading page '${pageName}':`, error);
-        appContainer.innerHTML = '<h2 style="color: red; text-align: center;">System Error: Module not found!</h2>';
+
+        console.group("🚨 MODULE LOAD ERROR");
+
+        console.error("Page :", pageName);
+
+        console.error("Error :", error);
+
+        console.error("Message :", error.message);
+
+        console.error("Stack :", error.stack);
+
+        console.groupEnd();
+
+        appContainer.innerHTML = `
+            <div style="
+                color:#ff4444;
+                padding:20px;
+                font-family:monospace;
+                white-space:pre-wrap;
+                overflow:auto;
+            ">
+                <h2>System Error</h2>
+
+                <b>${error.name}</b>
+
+                <br><br>
+
+                ${error.message}
+
+                <hr>
+
+                ${error.stack}
+            </div>
+        `;
+
     }
+
 }
