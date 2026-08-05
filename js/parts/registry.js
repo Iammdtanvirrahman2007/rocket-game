@@ -19,16 +19,19 @@ export function loadPartsToSidebar() {
     const loader = document.getElementById('part-loader');
     if (!loader) return;
 
-    loader.innerHTML = ''; // "Loading parts..." লেখা মুছে ফেলা
+    loader.innerHTML = '';
 
     Object.values(partsDatabase).forEach(part => {
         const item = document.createElement('div');
         item.className = `part-item ${part.id}`;
         item.draggable = true;
-        item.dataset.id = part.id; // dragManager এর সাথে ম্যাচ করার জন্য
+        item.dataset.id = part.id;
 
         item.innerHTML = `
-            <div class="part-icon">${part.icon || '🚀'}</div>
+            <div class="part-icon">
+                <img src="${part.image}" alt="${part.name}">
+            </div>
+
             <div class="part-details">
                 <h4>${part.name}</h4>
                 <p>Mass: ${part.stats.mass}t</p>
