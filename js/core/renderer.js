@@ -1,18 +1,21 @@
 import { getRocket } from "./rocketBuilder.js";
+import { removeRocketPart } from "./dragManager.js";
 
 export function renderRocket() {
 
     const dropZone = document.getElementById("drop-zone");
 
-    // পুরনো সব rocket part remove
-    dropZone.querySelectorAll(".rocket-part")
-        .forEach(part => part.remove());
+    // Placeholder
+    const placeholder = dropZone.querySelector("p");
+
+    // পুরনো Part Remove
+    dropZone.querySelectorAll(".rocket-part").forEach(part => {
+        part.remove();
+    });
 
     const rocket = getRocket();
 
     if (rocket.length === 0) {
-
-        const placeholder = dropZone.querySelector("p");
 
         if (placeholder) {
             placeholder.style.display = "block";
@@ -20,8 +23,6 @@ export function renderRocket() {
 
         return;
     }
-
-    const placeholder = dropZone.querySelector("p");
 
     if (placeholder) {
         placeholder.style.display = "none";
@@ -37,7 +38,16 @@ export function renderRocket() {
 
         div.innerHTML = `
             <img src="${part.image}" alt="${part.name}">
+
+            <button class="delete-btn">✖</button>
         `;
+
+        div.querySelector(".delete-btn")
+        .addEventListener("click", () => {
+
+            removeRocketPart(part.uid);
+
+        });
 
         dropZone.appendChild(div);
 
