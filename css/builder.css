@@ -156,6 +156,21 @@
 .assembled-part:hover .delete-btn {
     opacity: 1;
 }
+.part-icon{
+    width:70px;
+    height:70px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-shrink:0;
+}
+
+.part-icon img{
+    width:64px;
+    height:64px;
+    object-fit:contain;
+    display:block;
+}
 
 .delete-btn:hover {
     transform: scale(1.2);
