@@ -31,7 +31,11 @@ export function renderRocket() {
     rocket.forEach(part => {
 
         const div = document.createElement("div");
+        div.style.position="absolute";
 
+div.style.left=`${part.position.x}px`;
+
+div.style.top=`${part.position.y}px`;
         div.className = "rocket-part";
 
         div.dataset.uid = part.uid;
