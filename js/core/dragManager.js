@@ -1,3 +1,4 @@
+import { renderRocket } from "./renderer.js";
 import { getPartById } from '../parts/registry.js';
 import {
     addPart,
